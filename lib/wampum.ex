@@ -1,5 +1,14 @@
 defmodule Wampum do
-  @width 36
+  @hermit 00
+  @jovian 06
+  @copper 12
+  @saturn 15
+  @gemini 18
+  @helios 21
+  @silver 27
+  @aquari 30
+  @vulcan 33
+  @decons 36
 
   def quipu do
     %{
@@ -108,123 +117,50 @@ defmodule Wampum do
     }
   end
 
+  def codex do
+    chart = quipu()
+    Map.keys(chart)
+  end
+
   def zilch do
     {chart, keyed} = {quipu(), :Z0}
 
     if Map.has_key?(chart, keyed) do
       Map.get(chart, keyed)
     else
-      String.duplicate("__ ", 12)
+      String.duplicate("__ ", @copper)
     end
   end
 
-  def aquari(cord) when is_binary(cord) do
-    span = String.length(cord)
+  def pegbox(cord, tune) when is_binary(cord) and is_integer(tune) do
+    {span, zero} = {String.length(cord), @hermit}
 
-    if span >= @width do
-      String.slice(cord, 30, span) <> String.slice(cord, 00, span - 06)
+    if span >= @decons do
+      redhead = String.slice(cord, tune, span)
+      pigtail = String.slice(cord, zero, tune)
+      redhead <> pigtail
     else
       zilch()
     end
   end
 
-  def saturn(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 15, span) <> String.slice(cord, 00, span - 21)
-    else
-      zilch()
-    end
-  end
-
-  def hermit(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      cord
-    else
-      zilch()
-    end
-  end
-
-  def helios(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 21, span) <> String.slice(cord, 00, span - 15)
-    else
-      zilch()
-    end
-  end
-
-  def jovian(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 06, span) <> String.slice(cord, 00, span - 30)
-    else
-      zilch()
-    end
-  end
-
-  def silver(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 27, span) <> String.slice(cord, 00, span - 09)
-    else
-      zilch()
-    end
-  end
-
-  def copper(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 12, span) <> String.slice(cord, 00, span - 24)
-    else
-      zilch()
-    end
-  end
-
-  def vulcan(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 33, span) <> String.slice(cord, 00, span - 03)
-    else
-      zilch()
-    end
-  end
-
-  def gemini(cord) when is_binary(cord) do
-    span = String.length(cord)
-
-    if span >= @width do
-      String.slice(cord, 18, span) <> String.slice(cord, 00, span - 18)
-    else
-      zilch()
-    end
-  end
-
-  def lattice(pegbox) when is_list(pegbox) do
+  def lattice(headstock) when is_list(headstock) do
     IO.puts("")
-    Enum.map(pegbox, fn cord -> IO.puts("\t#{cord}") end)
+    Enum.map(headstock, fn cord -> IO.puts("\t#{cord}") end)
     IO.puts("")
   end
 
   def bfbfb(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      pegbox = [
-        vulcan(cord),
-        saturn(cord),
-        vulcan(cord),
-        saturn(cord),
-        vulcan(cord)
+      headstock = [
+        pegbox(cord, @vulcan),
+        pegbox(cord, @saturn),
+        pegbox(cord, @vulcan),
+        pegbox(cord, @saturn),
+        pegbox(cord, @vulcan)
       ]
 
-      pegbox
+      headstock
     else
       [zilch()]
     end
@@ -232,15 +168,15 @@ defmodule Wampum do
 
   def cgdae(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      pegbox = [
-        copper(cord),
-        silver(cord),
-        jovian(cord),
-        helios(cord),
-        hermit(cord)
+      headstock = [
+        pegbox(cord, @copper),
+        pegbox(cord, @silver),
+        pegbox(cord, @jovian),
+        pegbox(cord, @helios),
+        pegbox(cord, @hermit)
       ]
 
-      pegbox
+      headstock
     else
       [zilch()]
     end
@@ -248,16 +184,16 @@ defmodule Wampum do
 
   def eadgbe(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      pegbox = [
-        copper(cord),
-        vulcan(cord),
-        helios(cord),
-        jovian(cord),
-        silver(cord),
-        copper(cord)
+      headstock = [
+        pegbox(cord, @copper),
+        pegbox(cord, @vulcan),
+        pegbox(cord, @helios),
+        pegbox(cord, @jovian),
+        pegbox(cord, @silver),
+        pegbox(cord, @copper)
       ]
 
-      pegbox
+      headstock
     else
       [zilch()]
     end
@@ -265,19 +201,19 @@ defmodule Wampum do
 
   def ennead(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      pegbox = [
-        aquari(cord),
-        saturn(cord),
-        hermit(cord),
-        helios(cord),
-        jovian(cord),
-        silver(cord),
-        copper(cord),
-        vulcan(cord),
-        gemini(cord)
+      headstock = [
+        pegbox(cord, @aquari),
+        pegbox(cord, @saturn),
+        pegbox(cord, @hermit),
+        pegbox(cord, @helios),
+        pegbox(cord, @jovian),
+        pegbox(cord, @silver),
+        pegbox(cord, @copper),
+        pegbox(cord, @vulcan),
+        pegbox(cord, @gemini)
       ]
 
-      pegbox
+      headstock
     else
       [zilch()]
     end
@@ -285,16 +221,16 @@ defmodule Wampum do
 
   def fkbjdn(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      pegbox = [
-        jovian(cord),
-        aquari(cord),
-        gemini(cord),
-        jovian(cord),
-        aquari(cord),
-        gemini(cord)
+      headstock = [
+        pegbox(cord, @jovian),
+        pegbox(cord, @aquari),
+        pegbox(cord, @gemini),
+        pegbox(cord, @jovian),
+        pegbox(cord, @aquari),
+        pegbox(cord, @gemini)
       ]
 
-      pegbox
+      headstock
     else
       [zilch()]
     end
