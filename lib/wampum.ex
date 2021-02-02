@@ -128,15 +128,22 @@ defmodule Wampum do
   end
 
   def gamut do
+    epoch = DateTime.to_unix(DateTime.utc_now())
+    IO.puts("")
+
     Enum.each(clefs(), fn keyed ->
-      IO.write("\t#{keyed}")
+      IO.write("\t#{keyed}-I#{epoch}")
       weave(keyed)
     end)
   end
 
   def gamut(tuned) when is_atom(tuned) do
+    strum = String.upcase(to_string(tuned))
+    epoch = DateTime.to_unix(DateTime.utc_now())
+    IO.puts("")
+
     Enum.each(clefs(), fn keyed ->
-      IO.write("\t#{keyed}-#{tuned}")
+      IO.write("\t#{keyed}-#{strum}-I#{epoch}")
       weave(tuned, keyed)
     end)
   end
