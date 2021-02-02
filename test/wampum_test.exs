@@ -15,15 +15,24 @@ defmodule WampumTest do
   @vulcan 33
   @decons 36
 
-  test "function quipu return type map" do
+  test "quipu function return type map" do
     assert is_map(Wpm.quipu()) == true
   end
 
-  test "codex function return type list" do
-    assert is_list(Wpm.codex()) == true
+  test "clefs function return type list" do
+    assert is_list(Wpm.clefs()) == true
   end
 
-  test "pegbox return string length 36" do
+  test "codex function return type atom" do
+    assert is_atom(Wpm.codex()) == true
+  end
+
+  test "gamut functions return type atom" do
+    assert is_atom(Wpm.gamut()) == true
+    assert is_atom(Wpm.gamut(:cgdae)) == true
+  end
+
+  test "pegbox returns string length 36" do
     cord = Map.get(Wpm.quipu(), :N0)
 
     headstock = [
@@ -58,7 +67,7 @@ defmodule WampumTest do
     assert is_atom(Wpm.lattice(list)) == true
   end
 
-  test "weave function return type atom" do
+  test "weave functions return type atom" do
     {tuned, keyed} = {:cgdae, :N0}
     assert is_atom(Wpm.weave(keyed)) == true
     assert is_atom(Wpm.weave(tuned, keyed)) == true

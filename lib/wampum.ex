@@ -117,9 +117,28 @@ defmodule Wampum do
     }
   end
 
+  def clefs do
+    Enum.sort(Map.keys(quipu()))
+  end
+
   def codex do
-    chart = quipu()
-    Map.keys(chart)
+    IO.write("\n")
+    Enum.each(clefs(), fn keyed -> IO.write("#{keyed}\t") end)
+    IO.write("\n")
+  end
+
+  def gamut do
+    Enum.each(clefs(), fn keyed ->
+      IO.write("\t#{keyed}")
+      weave(keyed)
+    end)
+  end
+
+  def gamut(tuned) when is_atom(tuned) do
+    Enum.each(clefs(), fn keyed ->
+      IO.write("\t#{keyed}-#{tuned}")
+      weave(tuned, keyed)
+    end)
   end
 
   def zilch do
