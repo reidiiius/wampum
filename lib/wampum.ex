@@ -1,4 +1,8 @@
 defmodule Wampum do
+  @moduledoc """
+  Display fingerboard matrices of various pitch collections.
+  """
+
   @hermit 00
   @jovian 06
   @copper 12
@@ -9,6 +13,8 @@ defmodule Wampum do
   @aquari 30
   @vulcan 33
   @decons 36
+
+  @spec quipu() :: %{key: binary()}
 
   def quipu do
     %{
@@ -27,11 +33,13 @@ defmodule Wampum do
       :J25 => "qr vp __ __ pv rq wo __ __ yu __ ow ",
       :J26 => "vv zq __ __ ry wu __ uw yr __ __ qz ",
       :J2H => "vr zp __ __ rv wq __ us __ su __ qw ",
+      :J35 => "yr __ ot qz __ zq to __ __ wu __ uw ",
       :J36 => "vu __ tw xr __ wt __ uv yq __ __ qy ",
       :J56 => "xr __ wt __ uv yq so __ qy __ __ tw ",
       :J5H => "xr __ wt __ uv yq so __ __ vu __ tw ",
       :K12 => "__ sx __ qz vv zq __ xs __ wu __ uw ",
       :K15 => "__ rx wt __ uv yq __ __ qy vu __ tw ",
+      :K16 => "__ zq to __ ry wu __ uw __ __ ot qz ",
       :K25 => "yr __ __ qz vv zq __ __ ry wu __ uw ",
       :K26 => "vp __ __ pv rq wo __ uy __ __ ow qr ",
       :K2H => "vr __ __ pz rv wq __ us __ su __ qw ",
@@ -117,15 +125,21 @@ defmodule Wampum do
     }
   end
 
+  @spec clefs() :: [atom()]
+
   def clefs do
     Enum.sort(Map.keys(quipu()))
   end
+
+  @spec codex() :: atom()
 
   def codex do
     IO.write("\n")
     Enum.each(clefs(), fn keyed -> IO.write("#{keyed}\t") end)
     IO.write("\n")
   end
+
+  @spec gamut() :: atom()
 
   def gamut do
     epoch = DateTime.to_unix(DateTime.utc_now())
@@ -136,6 +150,8 @@ defmodule Wampum do
       weave(keyed)
     end)
   end
+
+  @spec gamut(atom()) :: atom()
 
   def gamut(tuned) when is_atom(tuned) do
     strum = String.upcase(to_string(tuned))
@@ -148,6 +164,8 @@ defmodule Wampum do
     end)
   end
 
+  @spec zilch() :: binary()
+
   def zilch do
     {chart, keyed} = {quipu(), :Z0}
 
@@ -157,6 +175,8 @@ defmodule Wampum do
       String.duplicate("__ ", @copper)
     end
   end
+
+  @spec pegbox(binary(), integer()) :: binary()
 
   def pegbox(cord, tune) when is_binary(cord) and is_integer(tune) do
     {span, zero} = {String.length(cord), @hermit}
@@ -170,11 +190,15 @@ defmodule Wampum do
     end
   end
 
+  @spec lattice([binary()]) :: atom()
+
   def lattice(headstock) when is_list(headstock) do
     IO.puts("")
     Enum.map(headstock, fn cord -> IO.puts("\t#{cord}") end)
     IO.puts("")
   end
+
+  @spec bfbfb(binary()) :: [binary()]
 
   def bfbfb(cord) when is_binary(cord) do
     if String.printable?(cord) do
@@ -192,6 +216,8 @@ defmodule Wampum do
     end
   end
 
+  @spec cgdae(binary()) :: [binary()]
+
   def cgdae(cord) when is_binary(cord) do
     if String.printable?(cord) do
       headstock = [
@@ -207,6 +233,8 @@ defmodule Wampum do
       [zilch()]
     end
   end
+
+  @spec eadgbe(binary()) :: [binary()]
 
   def eadgbe(cord) when is_binary(cord) do
     if String.printable?(cord) do
@@ -224,6 +252,8 @@ defmodule Wampum do
       [zilch()]
     end
   end
+
+  @spec ennead(binary()) :: [binary()]
 
   def ennead(cord) when is_binary(cord) do
     if String.printable?(cord) do
@@ -245,6 +275,8 @@ defmodule Wampum do
     end
   end
 
+  @spec fkbjdn(binary()) :: [binary()]
+
   def fkbjdn(cord) when is_binary(cord) do
     if String.printable?(cord) do
       headstock = [
@@ -262,6 +294,8 @@ defmodule Wampum do
     end
   end
 
+  @spec weave(atom()) :: atom()
+
   def weave(keyed) when is_atom(keyed) do
     chart = quipu()
 
@@ -271,6 +305,8 @@ defmodule Wampum do
       lattice([zilch()])
     end
   end
+
+  @spec weave(atom(), atom()) :: atom()
 
   def weave(tuned, keyed) when is_atom(tuned) and is_atom(keyed) do
     chart = quipu()
