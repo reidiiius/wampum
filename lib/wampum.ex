@@ -132,9 +132,9 @@ defmodule Wampum do
     Enum.sort(Map.keys(quipu()))
   end
 
-  @spec recur([atom()], integer()) :: atom()
+  @spec tablet([atom()], integer()) :: atom()
 
-  def recur(menu, numb) when numb < length(menu) - 1 do
+  def tablet(menu, numb) when numb < length(menu) - 1 do
     item = Enum.at(menu, numb)
 
     if rem(numb, @pillar) == @pillar - 1 do
@@ -143,10 +143,10 @@ defmodule Wampum do
       IO.write("\t#{item}")
     end
 
-    recur(menu, numb + 1)
+    tablet(menu, numb + 1)
   end
 
-  def recur(menu, numb) do
+  def tablet(menu, numb) do
     item = Enum.at(menu, numb)
     IO.write("\t#{item}\n")
   end
@@ -156,7 +156,7 @@ defmodule Wampum do
   def codex do
     menu = clefs()
     IO.puts("")
-    recur(menu, 0)
+    tablet(menu, 0)
   end
 
   @spec gamut() :: atom()
@@ -306,7 +306,7 @@ defmodule Wampum do
 
   @spec weave(atom()) :: atom()
 
-  def weave(keyed \\ :N0) when is_atom(keyed) do
+  def weave(keyed \\ :Z0) when is_atom(keyed) do
     chart = quipu()
 
     if Map.has_key?(chart, keyed) do
