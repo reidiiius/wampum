@@ -5,6 +5,7 @@ defmodule Wampum do
 
   @hermit 00
   @jovian 06
+  @pillar 08
   @copper 12
   @saturn 15
   @gemini 18
@@ -131,12 +132,31 @@ defmodule Wampum do
     Enum.sort(Map.keys(quipu()))
   end
 
+  @spec recur([atom()], integer()) :: atom()
+
+  def recur(menu, numb) when numb < length(menu) - 1 do
+    item = Enum.at(menu, numb)
+
+    if rem(numb, @pillar) == @pillar - 1 do
+      IO.write("\t#{item}\n")
+    else
+      IO.write("\t#{item}")
+    end
+
+    recur(menu, numb + 1)
+  end
+
+  def recur(menu, numb) do
+    item = Enum.at(menu, numb)
+    IO.write("\t#{item}\n")
+  end
+
   @spec codex() :: atom()
 
   def codex do
-    IO.write("\n")
-    Enum.each(clefs(), fn keyed -> IO.write("#{keyed}\t") end)
-    IO.write("\n")
+    menu = clefs()
+    IO.puts("")
+    recur(menu, 0)
   end
 
   @spec gamut() :: atom()
@@ -286,7 +306,7 @@ defmodule Wampum do
 
   @spec weave(atom()) :: atom()
 
-  def weave(keyed) when is_atom(keyed) do
+  def weave(keyed \\ :N0) when is_atom(keyed) do
     chart = quipu()
 
     if Map.has_key?(chart, keyed) do
