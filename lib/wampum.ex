@@ -192,9 +192,9 @@ defmodule Wampum do
 
   @spec lattice([binary()]) :: atom()
 
-  def lattice(headstock) when is_list(headstock) do
+  def lattice(harp) when is_list(harp) do
     IO.puts("")
-    Enum.map(headstock, fn cord -> IO.puts("\t#{cord}") end)
+    Enum.map(harp, fn cord -> IO.puts("\t#{cord}") end)
     IO.puts("")
   end
 
@@ -202,15 +202,13 @@ defmodule Wampum do
 
   def bfbfb(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      headstock = [
+      [
         pegbox(cord, @vulcan),
         pegbox(cord, @saturn),
         pegbox(cord, @vulcan),
         pegbox(cord, @saturn),
         pegbox(cord, @vulcan)
       ]
-
-      headstock
     else
       [zilch()]
     end
@@ -220,15 +218,13 @@ defmodule Wampum do
 
   def cgdae(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      headstock = [
+      [
         pegbox(cord, @copper),
         pegbox(cord, @silver),
         pegbox(cord, @jovian),
         pegbox(cord, @helios),
         pegbox(cord, @hermit)
       ]
-
-      headstock
     else
       [zilch()]
     end
@@ -238,7 +234,7 @@ defmodule Wampum do
 
   def eadgbe(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      headstock = [
+      [
         pegbox(cord, @copper),
         pegbox(cord, @vulcan),
         pegbox(cord, @helios),
@@ -246,8 +242,6 @@ defmodule Wampum do
         pegbox(cord, @silver),
         pegbox(cord, @copper)
       ]
-
-      headstock
     else
       [zilch()]
     end
@@ -257,7 +251,7 @@ defmodule Wampum do
 
   def ennead(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      headstock = [
+      [
         pegbox(cord, @aquari),
         pegbox(cord, @saturn),
         pegbox(cord, @hermit),
@@ -268,8 +262,6 @@ defmodule Wampum do
         pegbox(cord, @vulcan),
         pegbox(cord, @gemini)
       ]
-
-      headstock
     else
       [zilch()]
     end
@@ -279,7 +271,7 @@ defmodule Wampum do
 
   def fkbjdn(cord) when is_binary(cord) do
     if String.printable?(cord) do
-      headstock = [
+      [
         pegbox(cord, @jovian),
         pegbox(cord, @aquari),
         pegbox(cord, @gemini),
@@ -287,8 +279,6 @@ defmodule Wampum do
         pegbox(cord, @aquari),
         pegbox(cord, @gemini)
       ]
-
-      headstock
     else
       [zilch()]
     end
