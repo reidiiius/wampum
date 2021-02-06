@@ -312,7 +312,7 @@ defmodule Wampum do
     if Map.has_key?(chart, keyed) do
       lattice(ennead(Map.get(chart, keyed)))
     else
-      lattice([zilch()])
+      lattice(["#{keyed} ?"])
     end
   end
 
@@ -339,10 +339,10 @@ defmodule Wampum do
           lattice(fkbjdn(Map.get(chart, keyed)))
 
         _ ->
-          lattice([zilch()])
+          lattice(["#{tuned} ?"])
       end
     else
-      lattice([zilch()])
+      lattice(["#{keyed} ?"])
     end
   end
 end
