@@ -77,7 +77,7 @@ defmodule WampumTest do
     assert is_tuple(Wpm.gamut(nil)) == true
   end
 
-  test "gamut return tuple elements values :ok" do
+  test "gamut return tuple elements value :ok" do
     pegs = [:bfbfb, :cgdae, :eadgbe, :ennead, :fkbjdn, nil]
 
     for sign <- pegs, item <- [0, 1] do
