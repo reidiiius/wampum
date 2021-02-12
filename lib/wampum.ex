@@ -285,6 +285,33 @@ defmodule Wampum do
     IO.puts("")
   end
 
+  @spec synod(atom()) :: atom()
+
+  def synod(tuned \\ nil) when is_atom(tuned) do
+    cond do
+      tuned in [:a4ths, :b5ths, :bfbfb, :triton] ->
+        :bfbfb
+
+      tuned in [:cello, :cgdae, :mando, :p5ths, :viola, :violin] ->
+        :cgdae
+
+      tuned in [:eadgbe, :guitar] ->
+        :eadgbe
+
+      tuned in [:bass, :beadgcf, :ennead, :p4ths] ->
+        :ennead
+
+      tuned in [:fkbjdn, :m3rds] ->
+        :fkbjdn
+
+      tuned in [false, nil] ->
+        false
+
+      true ->
+        true
+    end
+  end
+
   @spec weave(atom()) :: atom()
 
   def weave(keyed \\ :Z0) when is_atom(keyed) do
@@ -303,7 +330,7 @@ defmodule Wampum do
     chart = quipu()
 
     if Map.has_key?(chart, keyed) do
-      case tuned do
+      case synod(tuned) do
         :bfbfb ->
           lattice(bfbfb(Map.get(chart, keyed)))
 
@@ -329,7 +356,7 @@ defmodule Wampum do
 
   @spec gamut(atom()) :: {atom()}
 
-  def gamut(tuned \\ :ennead) when is_atom(tuned) do
+  def gamut(tuned \\ nil) when is_atom(tuned) do
     route = "assets/exchequer.txt"
     typal = Path.type(route)
 
@@ -355,7 +382,7 @@ defmodule Wampum do
             cord = Map.get(chart, keyed)
             yarn = "#{paddy}\t#{keyed}-#{strum}-I#{epoch}\n"
 
-            case tuned do
+            case synod(tuned) do
               :bfbfb ->
                 IO.write(roll, yarn)
 

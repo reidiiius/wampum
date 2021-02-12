@@ -66,6 +66,12 @@ defmodule WampumTest do
     assert is_atom(Wpm.lattice(list)) == true
   end
 
+  test "synod function return type atom" do
+    {tuned, keyed} = {:violin, :N0}
+    assert is_atom(Wpm.weave(keyed)) == true
+    assert is_atom(Wpm.weave(tuned, keyed)) == true
+  end
+
   test "weave functions return type atom" do
     {tuned, keyed} = {:cgdae, :N0}
     assert is_atom(Wpm.weave(keyed)) == true
