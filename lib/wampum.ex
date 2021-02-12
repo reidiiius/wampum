@@ -159,29 +159,10 @@ defmodule Wampum do
     tablet(menu, 0)
   end
 
-  @spec gamut() :: atom()
+  @spec horus(atom()) :: integer()
 
-  def gamut do
-    epoch = DateTime.to_unix(DateTime.utc_now())
-    IO.puts("")
-
-    Enum.each(clefs(), fn keyed ->
-      IO.write("\t#{keyed}-I#{epoch}")
-      weave(keyed)
-    end)
-  end
-
-  @spec gamut(atom()) :: atom()
-
-  def gamut(tuned) when is_atom(tuned) do
-    strum = String.upcase(to_string(tuned))
-    epoch = DateTime.to_unix(DateTime.utc_now())
-    IO.puts("")
-
-    Enum.each(clefs(), fn keyed ->
-      IO.write("\t#{keyed}-#{strum}-I#{epoch}")
-      weave(tuned, keyed)
-    end)
+  def horus(unit \\ :second) when is_atom(unit) do
+    System.system_time(unit)
   end
 
   @spec zilch() :: binary()
@@ -208,14 +189,6 @@ defmodule Wampum do
     else
       zilch()
     end
-  end
-
-  @spec lattice([binary()]) :: atom()
-
-  def lattice(harp) when is_list(harp) do
-    IO.puts("")
-    Enum.map(harp, fn cord -> IO.puts("\t#{cord}") end)
-    IO.puts("")
   end
 
   @spec bfbfb(binary()) :: [binary()]
@@ -304,6 +277,14 @@ defmodule Wampum do
     end
   end
 
+  @spec lattice([binary()]) :: atom()
+
+  def lattice(harp) when is_list(harp) do
+    IO.puts("")
+    Enum.map(harp, fn cord -> IO.puts("\t#{cord}") end)
+    IO.puts("")
+  end
+
   @spec weave(atom()) :: atom()
 
   def weave(keyed \\ :Z0) when is_atom(keyed) do
@@ -312,7 +293,7 @@ defmodule Wampum do
     if Map.has_key?(chart, keyed) do
       lattice(ennead(Map.get(chart, keyed)))
     else
-      lattice(["#{keyed} ?"])
+      lattice(["#{inspect(keyed)} ?"])
     end
   end
 
@@ -339,10 +320,91 @@ defmodule Wampum do
           lattice(fkbjdn(Map.get(chart, keyed)))
 
         _ ->
-          lattice(["#{tuned} ?"])
+          lattice(["#{inspect(tuned)} ?"])
       end
     else
-      lattice(["#{keyed} ?"])
+      lattice(["#{inspect(keyed)} ?"])
+    end
+  end
+
+  @spec gamut(atom()) :: {atom()}
+
+  def gamut(tuned \\ :ennead) when is_atom(tuned) do
+    route = "assets/exchequer.txt"
+    typal = Path.type(route)
+
+    if typal == :relative do
+      unless File.dir?(Path.dirname(route)) do
+        File.mkdir(Path.dirname(route))
+      end
+
+      unless File.exists?(route) do
+        File.touch(route, horus(:second))
+      end
+
+      if File.regular?(route) do
+        chart = quipu()
+        signs = clefs()
+        final = List.last(signs)
+        strum = String.upcase(to_string(tuned))
+        epoch = horus(:microsecond)
+        paddy = "\n\n"
+
+        File.open(route, [:write, :utf8], fn roll ->
+          Enum.each(signs, fn keyed ->
+            cord = Map.get(chart, keyed)
+            yarn = "#{paddy}\t#{keyed}-#{strum}-I#{epoch}\n"
+
+            case tuned do
+              :bfbfb ->
+                IO.write(roll, yarn)
+
+                Enum.each(bfbfb(cord), fn item ->
+                  IO.write(roll, "\t#{item}\n")
+                end)
+
+              :cgdae ->
+                IO.write(roll, yarn)
+
+                Enum.each(cgdae(cord), fn item ->
+                  IO.write(roll, "\t#{item}\n")
+                end)
+
+              :eadgbe ->
+                IO.write(roll, yarn)
+
+                Enum.each(eadgbe(cord), fn item ->
+                  IO.write(roll, "\t#{item}\n")
+                end)
+
+              :ennead ->
+                IO.write(roll, yarn)
+
+                Enum.each(ennead(cord), fn item ->
+                  IO.write(roll, "\t#{item}\n")
+                end)
+
+              :fkbjdn ->
+                IO.write(roll, yarn)
+
+                Enum.each(fkbjdn(cord), fn item ->
+                  IO.write(roll, "\t#{item}\n")
+                end)
+
+              _ ->
+                if keyed == final do
+                  IO.puts("\n\t#{inspect(tuned)} ?\n")
+                end
+            end
+          end)
+
+          IO.write(roll, paddy)
+        end)
+      else
+        IO.puts("\n\tFile.exists? \x22#{route}\x22\n")
+      end
+    else
+      IO.puts("\n\tThe path type is #{typal}?\n")
     end
   end
 end
