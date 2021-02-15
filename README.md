@@ -18,7 +18,7 @@ Command-line
 
     Interactive Elixir (1.10.3)
     iex(1)> Wampum.codex              
-    
+
             J136L7  J167L2  J167L2H J16L27  J17     J17L2   J2      J23
             J236    J23K6   J246L3  J25     J256    J25L6   J26     J26L3
             J26L34  J2H     J2K34   J2K5    J2K56   J2K56M4 J2K5H   J2K5M4
@@ -34,7 +34,7 @@ Command-line
             N26L5   N345    N345L7  N45L2   N5L2    N67M2   N6M2    Z0
     :ok
     iex(2)> Wampum.weave :N0
-    
+
             __ qw vr __ tt __ rv wq __ us __ su 
             wq __ us __ su __ qw vr __ tt __ rv 
             vr __ tt __ rv wq __ us __ su __ qw 
@@ -47,7 +47,7 @@ Command-line
     
     :ok
     iex(3)> Wampum.weave :cello, :N0 
-    
+
             rv wq __ us __ su __ qw vr __ tt __ 
             su __ qw vr __ tt __ rv wq __ us __ 
             tt __ rv wq __ us __ su __ qw vr __ 
@@ -57,8 +57,8 @@ Command-line
     :ok
     iex(4)> Wampum.gamut :guitar 
     {:ok, :guitar}
-    iex(5)> Wampum.review
-    
+    iex(5)> Wampum.audit
+
             N0-GUITAR-I1613416021631869
             rv wq __ us __ su __ qw vr __ tt __ 
             qw vr __ tt __ rv wq __ us __ su __ 

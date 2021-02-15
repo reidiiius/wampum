@@ -74,7 +74,7 @@ defmodule WampumTest do
     assert tuple_size(Wpm.gamut(nil)) == 2
   end
 
-  test "review function return type atom" do
-    assert is_atom(Wpm.review()) == true
+  test "audit function return type atom" do
+    assert is_atom(Wpm.audit()) == true
   end
 end

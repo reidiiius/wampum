@@ -454,8 +454,8 @@ defmodule Wampum do
     end
   end
 
-  @spec review() :: atom()
-  def review do
+  @spec audit() :: atom()
+  def audit do
     route = @epilog
 
     if File.regular?(route) do
