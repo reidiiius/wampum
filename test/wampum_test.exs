@@ -4,16 +4,13 @@ defmodule WampumTest do
 
   alias Wampum, as: Wpm
 
-  @hermit 00
-  @jovian 06
-  @copper 12
-  @saturn 15
-  @gemini 18
-  @helios 21
-  @silver 27
-  @aquari 30
-  @vulcan 33
-  @decons 36
+  test "tuning function return type list" do
+    assert is_list(Wpm.bfbfb()) == true
+    assert is_list(Wpm.cgdae()) == true
+    assert is_list(Wpm.eadgbe()) == true
+    assert is_list(Wpm.ennead()) == true
+    assert is_list(Wpm.fkbjdn()) == true
+  end
 
   test "quipu function return type map" do
     assert is_map(Wpm.quipu()) == true
@@ -21,6 +18,10 @@ defmodule WampumTest do
 
   test "clefs function return type list" do
     assert is_list(Wpm.clefs()) == true
+  end
+
+  test "tablet function return type atom" do
+    assert is_atom(Wpm.tablet(Wpm.clefs(), 0)) == true
   end
 
   test "codex function return type atom" do
@@ -31,33 +32,23 @@ defmodule WampumTest do
     assert is_integer(Wpm.horus()) == true
   end
 
+  test "zilch function return type binary" do
+    assert is_binary(Wpm.zilch()) == true
+  end
+
   test "pegbox returns string length 36" do
     cord = Map.get(Wpm.quipu(), :N0)
+    harp = Wpm.pitch(Wpm.ennead(), cord)
 
-    headstock = [
-      Wpm.pegbox(cord, @aquari),
-      Wpm.pegbox(cord, @saturn),
-      Wpm.pegbox(cord, @hermit),
-      Wpm.pegbox(cord, @helios),
-      Wpm.pegbox(cord, @jovian),
-      Wpm.pegbox(cord, @silver),
-      Wpm.pegbox(cord, @copper),
-      Wpm.pegbox(cord, @vulcan),
-      Wpm.pegbox(cord, @gemini)
-    ]
-
-    Enum.map(headstock, fn cord ->
-      assert String.length(cord) == @decons
+    Enum.each(harp, fn cord ->
+      assert String.length(cord) == 36
     end)
   end
 
-  test "tuning functions return type list" do
+  test "pitch function return type list" do
+    harp = Wpm.ennead()
     cord = Wpm.zilch()
-    assert is_list(Wpm.bfbfb(cord)) == true
-    assert is_list(Wpm.cgdae(cord)) == true
-    assert is_list(Wpm.eadgbe(cord)) == true
-    assert is_list(Wpm.ennead(cord)) == true
-    assert is_list(Wpm.fkbjdn(cord)) == true
+    assert is_list(Wpm.pitch(harp, cord)) == true
   end
 
   test "lattice function return type atom" do
@@ -72,22 +63,18 @@ defmodule WampumTest do
     assert is_atom(Wpm.weave(tuned, keyed)) == true
   end
 
-  test "weave functions return type atom" do
-    {tuned, keyed} = {:cgdae, :N0}
+  test "weave function return type atom" do
+    {tuned, keyed} = {:cello, :N0}
     assert is_atom(Wpm.weave(keyed)) == true
     assert is_atom(Wpm.weave(tuned, keyed)) == true
   end
 
-  test "gamut functions return type tuple" do
-    assert is_tuple(Wpm.gamut()) == true
-    assert is_tuple(Wpm.gamut(nil)) == true
+  test "gamut function return type tuple" do
+    assert is_tuple(Wpm.gamut(:bass)) == true
+    assert tuple_size(Wpm.gamut(nil)) == 2
   end
 
-  test "gamut return tuple elements value :ok" do
-    pegs = [:bfbfb, :cgdae, :eadgbe, :ennead, :fkbjdn, nil]
-
-    for sign <- pegs, item <- [0, 1] do
-      assert elem(Wpm.gamut(sign), item) == :ok
-    end
+  test "review function return type atom" do
+    assert is_atom(Wpm.review()) == true
   end
 end

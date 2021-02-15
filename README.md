@@ -17,29 +17,7 @@ Command-line
     iex -S mix
 
     Interactive Elixir (1.10.3)
-    iex(1)> Wampum.weave :N0
-    
-            __ qw vr __ tt __ rv wq __ us __ su 
-            wq __ us __ su __ qw vr __ tt __ rv 
-            vr __ tt __ rv wq __ us __ su __ qw 
-            us __ su __ qw vr __ tt __ rv wq __ 
-            tt __ rv wq __ us __ su __ qw vr __ 
-            su __ qw vr __ tt __ rv wq __ us __ 
-            rv wq __ us __ su __ qw vr __ tt __ 
-            qw vr __ tt __ rv wq __ us __ su __ 
-            __ us __ su __ qw vr __ tt __ rv wq 
-    
-    :ok
-    iex(2)> Wampum.weave :cgdae, :N0 
-    
-            rv wq __ us __ su __ qw vr __ tt __ 
-            su __ qw vr __ tt __ rv wq __ us __ 
-            tt __ rv wq __ us __ su __ qw vr __ 
-            us __ su __ qw vr __ tt __ rv wq __ 
-            vr __ tt __ rv wq __ us __ su __ qw 
-    
-    :ok
-    iex(3)> Wampum.codex              
+    iex(1)> Wampum.codex              
     
             J136L7  J167L2  J167L2H J16L27  J17     J17L2   J2      J23
             J236    J23K6   J246L3  J25     J256    J25L6   J26     J26L3
@@ -55,7 +33,43 @@ Command-line
             K5M4    K6      K6H     K6M5    N0      N167    N167M4  N25M6
             N26L5   N345    N345L7  N45L2   N5L2    N67M2   N6M2    Z0
     :ok
-    iex(4)>
+    iex(2)> Wampum.weave :N0
+    
+            __ qw vr __ tt __ rv wq __ us __ su 
+            wq __ us __ su __ qw vr __ tt __ rv 
+            vr __ tt __ rv wq __ us __ su __ qw 
+            us __ su __ qw vr __ tt __ rv wq __ 
+            tt __ rv wq __ us __ su __ qw vr __ 
+            su __ qw vr __ tt __ rv wq __ us __ 
+            rv wq __ us __ su __ qw vr __ tt __ 
+            qw vr __ tt __ rv wq __ us __ su __ 
+            __ us __ su __ qw vr __ tt __ rv wq 
+    
+    :ok
+    iex(3)> Wampum.weave :cello, :N0 
+    
+            rv wq __ us __ su __ qw vr __ tt __ 
+            su __ qw vr __ tt __ rv wq __ us __ 
+            tt __ rv wq __ us __ su __ qw vr __ 
+            us __ su __ qw vr __ tt __ rv wq __ 
+            vr __ tt __ rv wq __ us __ su __ qw 
+    
+    :ok
+    iex(4)> Wampum.gamut :guitar 
+    {:ok, :guitar}
+    iex(5)> Wampum.review
+    
+            N0-GUITAR-I1613416021631869
+            rv wq __ us __ su __ qw vr __ tt __ 
+            qw vr __ tt __ rv wq __ us __ su __ 
+            us __ su __ qw vr __ tt __ rv wq __ 
+            tt __ rv wq __ us __ su __ qw vr __ 
+            su __ qw vr __ tt __ rv wq __ us __ 
+            rv wq __ us __ su __ qw vr __ tt __ 
+
+            ...
+    :ok
+    iex(6)>
 
 ---
 
