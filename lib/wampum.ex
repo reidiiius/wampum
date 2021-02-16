@@ -365,8 +365,10 @@ defmodule Wampum do
     typal = Path.type(route)
 
     if typal == :relative do
-      unless File.dir?(Path.dirname(route)) do
-        File.mkdir(Path.dirname(route))
+      chest = Path.dirname(route)
+
+      unless File.dir?(chest) do
+        File.mkdir(chest)
       end
 
       unless File.exists?(route) do
