@@ -275,7 +275,7 @@ defmodule Wampum do
   @spec synod(atom()) :: atom()
   def synod(tuned \\ nil) when is_atom(tuned) do
     cond do
-      tuned in [:a4ths, :b5ths, :bfbfb, :triton] ->
+      tuned in [:bfbfb, :triton] ->
         :bfbfb
 
       tuned in [:cello, :cgdae, :mando, :p5ths, :viola, :violin] ->
@@ -357,6 +357,17 @@ defmodule Wampum do
     end
   end
 
+  @spec bloom(pid(), binary(), [integer()], binary()) :: atom()
+  defp bloom(roll, yarn, digs, cord) when is_pid(roll) and is_binary(yarn) do
+    IO.write(roll, yarn)
+
+    if is_list(digs) and is_binary(cord) do
+      Enum.each(pitch(digs, cord), fn item ->
+        IO.write(roll, "\t#{item}\n")
+      end)
+    end
+  end
+
   @epilog "assets/exchequer.txt"
 
   @spec gamut(atom()) :: {atom(), atom()}
@@ -391,39 +402,24 @@ defmodule Wampum do
             if String.printable?(cord) do
               case synod(tuned) do
                 :bfbfb ->
-                  IO.write(roll, yarn)
-
-                  Enum.each(pitch(bfbfb(), cord), fn item ->
-                    IO.write(roll, "\t#{item}\n")
-                  end)
+                  digs = bfbfb()
+                  bloom(roll, yarn, digs, cord)
 
                 :cgdae ->
-                  IO.write(roll, yarn)
-
-                  Enum.each(pitch(cgdae(), cord), fn item ->
-                    IO.write(roll, "\t#{item}\n")
-                  end)
+                  digs = cgdae()
+                  bloom(roll, yarn, digs, cord)
 
                 :eadgbe ->
-                  IO.write(roll, yarn)
-
-                  Enum.each(pitch(eadgbe(), cord), fn item ->
-                    IO.write(roll, "\t#{item}\n")
-                  end)
+                  digs = eadgbe()
+                  bloom(roll, yarn, digs, cord)
 
                 :ennead ->
-                  IO.write(roll, yarn)
-
-                  Enum.each(pitch(ennead(), cord), fn item ->
-                    IO.write(roll, "\t#{item}\n")
-                  end)
+                  digs = ennead()
+                  bloom(roll, yarn, digs, cord)
 
                 :fkbjdn ->
-                  IO.write(roll, yarn)
-
-                  Enum.each(pitch(fkbjdn(), cord), fn item ->
-                    IO.write(roll, "\t#{item}\n")
-                  end)
+                  digs = fkbjdn()
+                  bloom(roll, yarn, digs, cord)
 
                 _ ->
                   if keyed == final do
@@ -449,10 +445,10 @@ defmodule Wampum do
 
     taboo = is_boolean(synod(tuned))
 
-    unless taboo do
-      {:ok, tuned}
-    else
+    if taboo do
       {:error, taboo}
+    else
+      {:ok, tuned}
     end
   end
 
