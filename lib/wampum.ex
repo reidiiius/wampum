@@ -310,7 +310,8 @@ defmodule Wampum do
         digs = ennead()
         lattice(pitch(digs, cord))
       else
-        lattice([String.replace(zilch(), "__", "??")])
+        wire = String.replace(zilch(), "__", "??")
+        lattice([wire])
       end
     else
       lattice(["#{inspect(keyed)} ?"])
@@ -323,9 +324,10 @@ defmodule Wampum do
 
     if Map.has_key?(chart, keyed) do
       cord = Map.get(chart, keyed)
+      cloak = synod(tuned)
 
       if String.printable?(cord) do
-        case synod(tuned) do
+        case cloak do
           :bfbfb ->
             digs = bfbfb()
             lattice(pitch(digs, cord))
@@ -350,7 +352,8 @@ defmodule Wampum do
             lattice(["#{inspect(tuned)} ?"])
         end
       else
-        lattice([String.replace(zilch(), "__", "??")])
+        wire = String.replace(zilch(), "__", "??")
+        lattice([wire])
       end
     else
       lattice(["#{inspect(keyed)} ?"])
@@ -392,6 +395,7 @@ defmodule Wampum do
         final = List.last(signs)
         strum = String.upcase(to_string(tuned))
         epoch = horus(:microsecond)
+        cloak = synod(tuned)
         paddy = "\n\n"
 
         File.open(route, [:write, :utf8], fn roll ->
@@ -400,7 +404,7 @@ defmodule Wampum do
             yarn = "#{paddy}\t#{keyed}-#{strum}-I#{epoch}\n"
 
             if String.printable?(cord) do
-              case synod(tuned) do
+              case cloak do
                 :bfbfb ->
                   digs = bfbfb()
                   bloom(roll, yarn, digs, cord)
