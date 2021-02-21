@@ -224,7 +224,7 @@ defmodule Wampum do
     IO.write("\t#{item}\n")
   end
 
-  @spec codex() :: atom()
+  @spec codex() :: {atom(), integer()}
   def codex do
     menu = clefs()
     size = length(menu)
@@ -308,7 +308,7 @@ defmodule Wampum do
     end
   end
 
-  @spec weave(atom()) :: atom()
+  @spec weave(atom()) :: {atom(), atom()}
   def weave(keyed \\ nil) when is_atom(keyed) do
     chart = quipu()
 
@@ -336,7 +336,7 @@ defmodule Wampum do
     end
   end
 
-  @spec weave(atom(), atom()) :: atom()
+  @spec weave(atom(), atom()) :: {atom(), atom()}
   def weave(tuned, keyed) when is_atom(tuned) and is_atom(keyed) do
     cloak = synod(tuned)
     taboo = is_boolean(cloak)
@@ -524,7 +524,7 @@ defmodule Wampum do
     end
   end
 
-  @spec audit() :: atom()
+  @spec audit() :: {atom(), any()}
   def audit do
     route = @epilog
     typal = Path.type(route)
