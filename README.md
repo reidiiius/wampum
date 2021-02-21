@@ -32,7 +32,8 @@ Command-line
             K34     K345M2  K345M2H K34M2   K35M24  K5      K56     K56M4
             K5M4    K6      K6H     K6M5    N0      N167    N167M4  N25M6
             N26L5   N345    N345L7  N45L2   N5L2    N67M2   N6M2    Z0
-    :ok
+
+    {:ok, 104}
     iex(2)> Wampum.weave :N0
 
             __ qw vr __ tt __ rv wq __ us __ su 
@@ -44,8 +45,8 @@ Command-line
             rv wq __ us __ su __ qw vr __ tt __ 
             qw vr __ tt __ rv wq __ us __ su __ 
             __ us __ su __ qw vr __ tt __ rv wq 
-    
-    :ok
+
+    {:ok, :N0}
     iex(3)> Wampum.weave :cello, :N0 
 
             rv wq __ us __ su __ qw vr __ tt __ 
@@ -53,8 +54,8 @@ Command-line
             tt __ rv wq __ us __ su __ qw vr __ 
             us __ su __ qw vr __ tt __ rv wq __ 
             vr __ tt __ rv wq __ us __ su __ qw 
-    
-    :ok
+
+    {:ok, :cello}
     iex(4)> Wampum.gamut :guitar 
     {:ok, :guitar}
     iex(5)> Wampum.audit
@@ -68,8 +69,14 @@ Command-line
             rv wq __ us __ su __ qw vr __ tt __ 
 
             ...
-    :ok
-    iex(6)>
+
+    {:ok, "assets/exchequer.txt"}
+    iex(6)> Wampum.gamut :clean
+    {:ok, :clean}
+    iex(7)> Wampum.audit       
+
+    {:ok, "assets/exchequer.txt"}
+    iex(8)>
 
 ---
 

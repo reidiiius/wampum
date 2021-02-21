@@ -220,14 +220,20 @@ defmodule Wampum do
 
   def tablet(menu, numb) do
     item = Enum.at(menu, numb)
+
     IO.write("\t#{item}\n")
   end
 
   @spec codex() :: atom()
   def codex do
     menu = clefs()
+    size = length(menu)
+
     IO.puts("")
-    tablet(menu, 0)
+    tablet(menu, @hermit)
+    IO.puts("")
+
+    {:ok, size}
   end
 
   @spec horus(atom()) :: integer()
@@ -235,8 +241,8 @@ defmodule Wampum do
     System.system_time(unit)
   end
 
-  @spec zilch() :: binary()
-  def zilch do
+  @spec tacit() :: binary()
+  def tacit do
     {chart, keyed} = {quipu(), :Z0}
 
     if Map.has_key?(chart, keyed) do
@@ -254,9 +260,10 @@ defmodule Wampum do
       {zero, part} = {@hermit, span - tune}
       redhead = String.slice(cord, tune, part)
       pigtail = String.slice(cord, zero, tune)
+
       redhead <> pigtail
     else
-      zilch()
+      tacit()
     end
   end
 
@@ -265,8 +272,8 @@ defmodule Wampum do
     for numb <- digs, do: [] ++ pegbox(cord, numb)
   end
 
-  @spec lattice([binary()]) :: atom()
-  def lattice(harp) when is_list(harp) do
+  @spec board([binary()]) :: atom()
+  def board(harp) when is_list(harp) do
     IO.puts("")
     Enum.each(harp, fn cord -> IO.puts("\t#{cord}") end)
     IO.puts("")
@@ -290,6 +297,9 @@ defmodule Wampum do
       tuned in [:fkbjdn, :m3rds] ->
         :fkbjdn
 
+      tuned in [:clean, :clear, :empty, :erase, :scrub] ->
+        :scrub
+
       tuned in [false, nil] ->
         false
 
@@ -299,7 +309,7 @@ defmodule Wampum do
   end
 
   @spec weave(atom()) :: atom()
-  def weave(keyed \\ :Z0) when is_atom(keyed) do
+  def weave(keyed \\ nil) when is_atom(keyed) do
     chart = quipu()
 
     if Map.has_key?(chart, keyed) do
@@ -308,55 +318,85 @@ defmodule Wampum do
       if String.printable?(cord) do
         # default tuning
         digs = ennead()
-        lattice(pitch(digs, cord))
+
+        pitch(digs, cord) |> board()
       else
-        wire = String.replace(zilch(), "__", "??")
-        lattice([wire])
+        wire = inspect(cord, binaries: :as_strings)
+
+        IO.puts("\n\t#{wire}\n")
       end
+
+      {:ok, keyed}
     else
-      lattice(["#{inspect(keyed)} ?"])
+      wire = inspect(keyed)
+
+      IO.puts("\n\t#{wire} ?\n")
+
+      {:error, keyed}
     end
   end
 
   @spec weave(atom(), atom()) :: atom()
   def weave(tuned, keyed) when is_atom(tuned) and is_atom(keyed) do
-    chart = quipu()
+    cloak = synod(tuned)
+    taboo = is_boolean(cloak)
 
-    if Map.has_key?(chart, keyed) do
-      cord = Map.get(chart, keyed)
-      cloak = synod(tuned)
+    if taboo do
+      wire = inspect(tuned)
 
-      if String.printable?(cord) do
-        case cloak do
-          :bfbfb ->
-            digs = bfbfb()
-            lattice(pitch(digs, cord))
+      IO.puts("\n\t#{wire} ?\n")
 
-          :cgdae ->
-            digs = cgdae()
-            lattice(pitch(digs, cord))
+      {:error, tuned}
+    else
+      chart = quipu()
 
-          :eadgbe ->
-            digs = eadgbe()
-            lattice(pitch(digs, cord))
+      if Map.has_key?(chart, keyed) do
+        cord = Map.get(chart, keyed)
 
-          :ennead ->
-            digs = ennead()
-            lattice(pitch(digs, cord))
+        if String.printable?(cord) do
+          case cloak do
+            :bfbfb ->
+              digs = bfbfb()
 
-          :fkbjdn ->
-            digs = fkbjdn()
-            lattice(pitch(digs, cord))
+              pitch(digs, cord) |> board()
 
-          _ ->
-            lattice(["#{inspect(tuned)} ?"])
+            :cgdae ->
+              digs = cgdae()
+
+              pitch(digs, cord) |> board()
+
+            :eadgbe ->
+              digs = eadgbe()
+
+              pitch(digs, cord) |> board()
+
+            :ennead ->
+              digs = ennead()
+
+              pitch(digs, cord) |> board()
+
+            :fkbjdn ->
+              digs = fkbjdn()
+
+              pitch(digs, cord) |> board()
+
+            _ ->
+              wire = inspect(cloak)
+
+              IO.puts("\n\t#{wire} ?\n")
+          end
+        else
+          wire = inspect(cord, binaries: :as_strings)
+
+          IO.puts("\n\t#{wire}\n")
         end
       else
-        wire = String.replace(zilch(), "__", "??")
-        lattice([wire])
+        wire = inspect(keyed)
+
+        IO.puts("\n\t#{wire} ?\n")
       end
-    else
-      lattice(["#{inspect(keyed)} ?"])
+
+      {:ok, tuned}
     end
   end
 
@@ -371,11 +411,8 @@ defmodule Wampum do
     end
   end
 
-  @epilog "assets/exchequer.txt"
-
-  @spec gamut(atom()) :: {atom(), atom()}
-  def gamut(tuned \\ nil) when is_atom(tuned) do
-    route = @epilog
+  @spec venue(binary()) :: boolean()
+  defp venue(route) when is_binary(route) do
     typal = Path.type(route)
 
     if typal == :relative do
@@ -389,13 +426,37 @@ defmodule Wampum do
         File.touch(route, horus(:second))
       end
 
-      if File.regular?(route) do
+      true
+    else
+      false
+    end
+  end
+
+  @epilog "assets/exchequer.txt"
+
+  @spec gamut(atom()) :: {atom(), atom()}
+  def gamut(tuned \\ nil) when is_atom(tuned) do
+    cloak = synod(tuned)
+    taboo = is_boolean(cloak)
+
+    if taboo do
+      wire = inspect(tuned)
+
+      IO.puts("\n\t#{wire} ?\n")
+
+      {:error, tuned}
+    else
+      route = @epilog
+      typal = Path.type(route)
+      place = venue(route)
+      media = File.regular?(route)
+
+      if place and media do
         chart = quipu()
         signs = clefs()
         final = List.last(signs)
         strum = String.upcase(to_string(tuned))
         epoch = horus(:microsecond)
-        cloak = synod(tuned)
         paddy = "\n\n"
 
         File.open(route, [:write, :utf8], fn roll ->
@@ -407,32 +468,45 @@ defmodule Wampum do
               case cloak do
                 :bfbfb ->
                   digs = bfbfb()
+
                   bloom(roll, yarn, digs, cord)
 
                 :cgdae ->
                   digs = cgdae()
+
                   bloom(roll, yarn, digs, cord)
 
                 :eadgbe ->
                   digs = eadgbe()
+
                   bloom(roll, yarn, digs, cord)
 
                 :ennead ->
                   digs = ennead()
+
                   bloom(roll, yarn, digs, cord)
 
                 :fkbjdn ->
                   digs = fkbjdn()
+
                   bloom(roll, yarn, digs, cord)
 
-                _ ->
+                :scrub ->
                   if keyed == final do
-                    IO.puts("\n\t#{inspect(tuned)} ?\n")
+                    IO.write(roll, "")
+                  end
+
+                _ ->
+                  wire = inspect(cloak)
+
+                  if keyed == final do
+                    IO.puts("\n\t#{wire} ?\n")
                   end
               end
             else
+              wire = inspect(cord, binaries: :as_strings)
+
               if keyed == final do
-                wire = String.replace(zilch(), "__", "??")
                 IO.puts("\n\t#{wire}\n")
               end
             end
@@ -440,30 +514,30 @@ defmodule Wampum do
 
           IO.write(roll, paddy)
         end)
+
+        {:ok, tuned}
       else
-        IO.puts("\n\tFile.exists? \x22#{route}\x22\n")
+        IO.puts("\n\tPathology: #{route}\n")
+
+        {:error, typal}
       end
-    else
-      IO.puts("\n\tThe path type is #{typal}?\n")
-    end
-
-    taboo = is_boolean(synod(tuned))
-
-    if taboo do
-      {:error, taboo}
-    else
-      {:ok, tuned}
     end
   end
 
   @spec audit() :: atom()
   def audit do
     route = @epilog
+    typal = Path.type(route)
+    media = File.regular?(route)
 
-    if File.regular?(route) do
-      IO.write(File.read!(route))
+    if media do
+      File.read!(route) |> IO.write()
+
+      {:ok, route}
     else
-      IO.puts("\n\tCheck: #{route}\n")
+      IO.puts("\n\tPathology: #{route}\n")
+
+      {:error, typal}
     end
   end
 end
