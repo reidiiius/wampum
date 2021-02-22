@@ -13,7 +13,7 @@ defmodule Wampum do
   @silver 27
   @aquari 30
   @vulcan 33
-  @decons 36
+  @decans 36
 
   @spec triton() :: [integer()]
   def triton do
@@ -246,14 +246,23 @@ defmodule Wampum do
     String.duplicate("__ ", @copper)
   end
 
+  @spec posit?(binary()) :: boolean()
+  def posit?(cord) when is_binary(cord) do
+    span = String.length(cord)
+    mink = span >= @decans
+    posh = String.printable?(cord)
+
+    mink and posh
+  end
+
   @spec pegbox(binary(), integer()) :: binary()
-  def pegbox(cord, tune) when is_binary(cord) and is_integer(tune) do
+  def pegbox(cord, numb) when is_binary(cord) and is_integer(numb) do
     span = String.length(cord)
 
-    if span >= @decons do
-      {zero, part} = {@hermit, span - tune}
-      redhead = String.slice(cord, tune, part)
-      pigtail = String.slice(cord, zero, tune)
+    if posit?(cord) do
+      {zero, part} = {@hermit, span - numb}
+      redhead = String.slice(cord, numb, part)
+      pigtail = String.slice(cord, zero, numb)
 
       redhead <> pigtail
     else
@@ -309,7 +318,7 @@ defmodule Wampum do
     if Map.has_key?(model, keyed) do
       cord = Map.get(model, keyed)
 
-      if String.printable?(cord) do
+      if posit?(cord) do
         # default tuning
         digs = quartz()
 
@@ -347,7 +356,7 @@ defmodule Wampum do
       if Map.has_key?(model, keyed) do
         cord = Map.get(model, keyed)
 
-        if String.printable?(cord) do
+        if posit?(cord) do
           case cloak do
             :bfbfb ->
               digs = triton()
@@ -379,6 +388,8 @@ defmodule Wampum do
 
               IO.puts("\n\t#{wire} ?\n")
           end
+
+          {:ok, tuned}
         else
           wire = inspect(cord, binaries: :as_strings)
 
@@ -388,9 +399,9 @@ defmodule Wampum do
         wire = inspect(keyed)
 
         IO.puts("\n\t#{wire} ?\n")
-      end
 
-      {:ok, tuned}
+        {:error, keyed}
+      end
     end
   end
 
@@ -405,8 +416,8 @@ defmodule Wampum do
     end
   end
 
-  @spec venue(binary()) :: boolean()
-  defp venue(route) when is_binary(route) do
+  @spec venue?(binary()) :: boolean()
+  defp venue?(route) when is_binary(route) do
     typal = Path.type(route)
 
     if typal == :relative do
@@ -442,7 +453,7 @@ defmodule Wampum do
     else
       route = @epilog
       typal = Path.type(route)
-      place = venue(route)
+      place = venue?(route)
       media = File.regular?(route)
 
       if place and media do
@@ -458,7 +469,7 @@ defmodule Wampum do
             cord = Map.get(model, keyed)
             yarn = "#{paddy}\t#{keyed}-#{strum}-I#{epoch}\n"
 
-            if String.printable?(cord) do
+            if posit?(cord) do
               case cloak do
                 :bfbfb ->
                   digs = triton()
@@ -522,9 +533,10 @@ defmodule Wampum do
   def audit do
     route = @epilog
     typal = Path.type(route)
+    place = File.exists?(route)
     media = File.regular?(route)
 
-    if media do
+    if place and media do
       File.read!(route) |> IO.write()
 
       {:ok, route}

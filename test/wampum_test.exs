@@ -59,6 +59,13 @@ defmodule WampumTest do
     assert String.length(cord) == 36
   end
 
+  test "posit? function return type boolean" do
+    cord = Wpm.tacit()
+    kept = Wpm.posit?(cord)
+
+    assert is_boolean(kept) == true
+  end
+
   test "pegbox returns string length 36" do
     digs = Wpm.quartz()
     cord = Wpm.tacit()
