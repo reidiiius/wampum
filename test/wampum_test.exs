@@ -5,26 +5,21 @@ defmodule WampumTest do
   alias Wampum, as: Wpm
 
   test "tuning functions return type list" do
-    triton = Wpm.bfbfb()
-    violin = Wpm.cgdae()
-    guitar = Wpm.eadgbe()
-    quartz = Wpm.ennead()
-    thirds = Wpm.fkbjdn()
-
     for digs <- [
-          triton,
-          violin,
-          guitar,
-          quartz,
-          thirds
-        ],
-        do: assert(is_list(digs) == true)
+          Wpm.triton(),
+          Wpm.violin(),
+          Wpm.guitar(),
+          Wpm.quartz(),
+          Wpm.thirds()
+        ] do
+      assert is_list(digs) == true
+    end
   end
 
   test "quipu function return type map" do
-    chart = Wpm.quipu()
+    model = Wpm.quipu()
 
-    assert is_map(chart) == true
+    assert is_map(model) == true
   end
 
   test "clefs function return type list" do
@@ -35,9 +30,11 @@ defmodule WampumTest do
 
   test "tablet function return type atom" do
     menu = Wpm.clefs()
-    kept = Wpm.tablet(menu, 0)
+    numb = length(menu)
+    kept = Wpm.tablet(menu, numb - 8)
 
     assert is_atom(kept) == true
+    assert match?(:ok, kept) == true
   end
 
   test "codex function return type tuple" do
@@ -45,6 +42,7 @@ defmodule WampumTest do
 
     assert is_tuple(kept) == true
     assert tuple_size(kept) == 2
+    assert match?({:ok, _}, kept) == true
   end
 
   test "horus function return type integer" do
@@ -62,7 +60,7 @@ defmodule WampumTest do
   end
 
   test "pegbox returns string length 36" do
-    digs = Wpm.ennead()
+    digs = Wpm.quartz()
     cord = Wpm.tacit()
 
     Enum.each(digs, fn tune ->
@@ -73,7 +71,7 @@ defmodule WampumTest do
   end
 
   test "pitch function return type list" do
-    digs = Wpm.ennead()
+    digs = Wpm.quartz()
     cord = Wpm.tacit()
     harp = Wpm.pitch(digs, cord)
 
@@ -86,6 +84,7 @@ defmodule WampumTest do
     kept = Wpm.board(harp)
 
     assert is_atom(kept) == true
+    assert match?(:ok, kept) == true
   end
 
   test "synod function return type atom" do
@@ -104,22 +103,25 @@ defmodule WampumTest do
     for kept <- [ones, twos] do
       assert is_tuple(kept) == true
       assert tuple_size(kept) == 2
+      assert match?({:ok, _}, kept) == true
     end
   end
 
   test "gamut function return type tuple" do
-    for tuned <- [:bass, nil, :erase] do
+    for tuned <- [:bass, :viola, :erase] do
       kept = Wpm.gamut(tuned)
 
       assert is_tuple(kept) == true
       assert tuple_size(kept) == 2
+      assert match?({:ok, _}, kept) == true
     end
   end
 
-  test "audit function return type typle" do
+  test "audit function return type tuple" do
     kept = Wpm.audit()
 
     assert is_tuple(kept) == true
     assert tuple_size(kept) == 2
+    assert match?({:ok, _}, kept) == true
   end
 end
