@@ -438,8 +438,8 @@ defmodule Wampum do
 
   ## Example:
 
-      iex> Wampum.synod(:guitar)
-      :eadgbe
+      iex> Wampum.synod(:eadgbe)
+      :guitar
       iex> Wampum.synod(:zigzag)
       true
       iex> Wampum.synod(nil)
@@ -450,20 +450,20 @@ defmodule Wampum do
   @spec synod(atom()) :: atom()
   def synod(tuned \\ nil) when is_atom(tuned) do
     cond do
-      tuned in [:bfbfb, :triton] ->
-        :bfbfb
+      tuned in [:a4t, :bfbf, :bfbfb, :d5t, :fbfb, :triton, :tritone] ->
+        :triton
 
-      tuned in [:cello, :cgdae, :mando, :p5t, :viola, :violin] ->
-        :cgdae
+      tuned in [:cello, :cgda, :cgdae, :gdae, :mando, :p5t, :viola, :violin] ->
+        :violin
 
       tuned in [:eadgbe, :guitar] ->
-        :eadgbe
+        :guitar
 
-      tuned in [:bass, :beadg, :eadg, :eadgc, :ennead, :p4t] ->
-        :ennead
+      tuned in [:bass, :beadg, :eadg, :eadgc, :ennead, :p4t, :quartz] ->
+        :quartz
 
-      tuned in [:fkbjdn, :m3t] ->
-        :fkbjdn
+      tuned in [:fkbjdn, :m3t, :thirds] ->
+        :thirds
 
       tuned in [:clean, :clear, :empty, :erase, :scrub] ->
         :scrub
@@ -548,33 +548,13 @@ defmodule Wampum do
         cord = Map.get(model, keyed)
 
         if posit?(cord) do
-          case cloak do
-            :bfbfb ->
-              digs = triton()
+          cond do
+            cloak in [:guitar, :quartz, :thirds, :triton, :violin] ->
+              digs = apply(__MODULE__, cloak, [])
 
               pitch(digs, cord) |> board()
 
-            :cgdae ->
-              digs = violin()
-
-              pitch(digs, cord) |> board()
-
-            :eadgbe ->
-              digs = guitar()
-
-              pitch(digs, cord) |> board()
-
-            :ennead ->
-              digs = quartz()
-
-              pitch(digs, cord) |> board()
-
-            :fkbjdn ->
-              digs = thirds()
-
-              pitch(digs, cord) |> board()
-
-            _ ->
+            true ->
               wire = inspect(cloak)
 
               IO.puts("\n\t#{wire} ?\n")
@@ -701,29 +681,9 @@ defmodule Wampum do
             yarn = "#{paddy}\t#{keyed}-#{strum}-I#{epoch}\n"
 
             if posit?(cord) do
-              case cloak do
-                :bfbfb ->
-                  digs = triton()
-
-                  bloom(roll, yarn, digs, cord)
-
-                :cgdae ->
-                  digs = violin()
-
-                  bloom(roll, yarn, digs, cord)
-
-                :eadgbe ->
-                  digs = guitar()
-
-                  bloom(roll, yarn, digs, cord)
-
-                :ennead ->
-                  digs = quartz()
-
-                  bloom(roll, yarn, digs, cord)
-
-                :fkbjdn ->
-                  digs = thirds()
+              cond do
+                cloak in [:guitar, :quartz, :thirds, :triton, :violin] ->
+                  digs = apply(__MODULE__, cloak, [])
 
                   bloom(roll, yarn, digs, cord)
 
@@ -732,7 +692,7 @@ defmodule Wampum do
                     IO.write(roll, "")
                   end
 
-                _ ->
+                true ->
                   wire = inspect(cloak)
 
                   if keyed == final do
