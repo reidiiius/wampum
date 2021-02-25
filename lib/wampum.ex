@@ -1,7 +1,35 @@
 defmodule Wampum do
   @moduledoc """
   Display fingerboard matrices of various pitch collections.
+
+  ## Examples:
+
+  View signature selection menu table of contents.
+
+      iex> Wampum.codex
+
+  View selected signature with default tuning.
+
+      iex> Wampum.weave :N0
+
+  View selected signature with specified tuning.
+
+      iex> Wampum.weave :cello, :N0
+
+  Write to file with specified tuning.
+
+      iex> Wampum.gamut :guitar
+
+  Read and view file that was written to.
+
+      iex> Wampum.audit
+
+  Erase file that was written to.
+
+      iex> Wampum.gamut :clean
+
   """
+  @moduledoc since: "0.1.0"
 
   @hermit 00
   @jovian 06
@@ -15,6 +43,12 @@ defmodule Wampum do
   @vulcan 33
   @decans 36
 
+  @lintel "Returns a List of Integer elements."
+
+  @doc """
+  - #{@lintel}
+  """
+  @doc since: "0.1.0"
   @spec triton() :: [integer()]
   def triton do
     digs = [
@@ -28,6 +62,10 @@ defmodule Wampum do
     digs
   end
 
+  @doc """
+  - #{@lintel}
+  """
+  @doc since: "0.1.0"
   @spec violin() :: [integer()]
   def violin do
     digs = [
@@ -41,6 +79,10 @@ defmodule Wampum do
     digs
   end
 
+  @doc """
+  - #{@lintel}
+  """
+  @doc since: "0.1.0"
   @spec guitar() :: [integer()]
   def guitar do
     digs = [
@@ -55,6 +97,10 @@ defmodule Wampum do
     digs
   end
 
+  @doc """
+  - #{@lintel}
+  """
+  @doc since: "0.1.0"
   @spec quartz() :: [integer()]
   def quartz do
     digs = [
@@ -72,6 +118,10 @@ defmodule Wampum do
     digs
   end
 
+  @doc """
+  - #{@lintel}
+  """
+  @doc since: "0.1.0"
   @spec thirds() :: [integer()]
   def thirds do
     digs = [
@@ -86,6 +136,10 @@ defmodule Wampum do
     digs
   end
 
+  @doc """
+  - Returns a Map with Atom keys and BitString values.
+  """
+  @doc since: "0.1.0"
   @spec quipu() :: %{key: binary()}
   def quipu do
     model = %{
@@ -198,6 +252,10 @@ defmodule Wampum do
     model
   end
 
+  @doc """
+  - Returns a List of Atom elements.
+  """
+  @doc since: "0.1.0"
   @spec clefs() :: [atom()]
   def clefs do
     quipu()
@@ -205,6 +263,19 @@ defmodule Wampum do
     |> Enum.sort()
   end
 
+  @doc """
+  - Receives a List and an Integer as arguments.
+
+  - Prints an #{@pillar} column tabular grid to screen.
+
+  - Returns the Atom `:ok` if successful.
+
+  ## Example:
+
+      iex> Wampum.tablet(Wampum.clefs(), 0)
+
+  """
+  @doc since: "0.1.0"
   @spec tablet([atom()], integer()) :: atom()
   def tablet(menu, numb) when numb < length(menu) - 1 do
     item = Enum.at(menu, numb)
@@ -224,6 +295,12 @@ defmodule Wampum do
     IO.write("\t#{item}\n")
   end
 
+  @doc """
+  - Prints a tabular grid of menu items to screen.
+
+  - Returns a Tuple with Atom and Integer elements.
+  """
+  @doc since: "0.1.0"
   @spec codex() :: {atom(), integer()}
   def codex do
     menu = clefs()
@@ -236,16 +313,42 @@ defmodule Wampum do
     {:ok, size}
   end
 
+  @doc """
+  - Receives an optional Atom time unit argument.
+
+  - Returns an Integer that represents system time.
+  """
+  @doc since: "0.1.0"
   @spec horus(atom()) :: integer()
   def horus(unit \\ :second) when is_atom(unit) do
     System.system_time(unit)
   end
 
+  @doc """
+  - Returns a BitString of #{@decans} characters.
+  """
+  @doc since: "0.1.0"
   @spec tacit() :: binary()
   def tacit do
     String.duplicate("__ ", @copper)
   end
 
+  @doc """
+  - Receives a BitString argument and returns a Boolean.
+
+  - Test whether given Bitstring length is greater than or equal to #{@decans}.
+
+  - Test whether given BitString charaters are printable.
+
+  ## Example:
+
+      iex(4)> Wampum.posit? Wampum.quipu[:Z0]        
+      true
+      iex(5)> Wampum.posit? Wampum.quipu[:Z0] <> "\0"
+      false
+
+  """
+  @doc since: "0.1.0"
   @spec posit?(binary()) :: boolean()
   def posit?(cord) when is_binary(cord) do
     span = String.length(cord)
@@ -255,6 +358,22 @@ defmodule Wampum do
     mink and posh
   end
 
+  @doc """
+  - Receives a BitString and an Integer as arguments.
+
+  - Then test whether BitString is greater than or equal to #{@decans}, and
+    if all the characters are printable using `Wampum.posit?` as a filter.
+
+  - If test succeeds, returns permuted BitString at passed Integer index,
+    else calls `Wampum.tacit` and returns a default BitString.
+
+  ## Example:
+
+      iex> Wampum.pegbox(Wampum.quipu[:J6], 15)
+      "wt __ uv yq __ __ qy vu __ tw __ rx "
+
+  """
+  @doc since: "0.1.0"
   @spec pegbox(binary(), integer()) :: binary()
   def pegbox(cord, numb) when is_binary(cord) and is_integer(numb) do
     span = String.length(cord)
@@ -270,11 +389,40 @@ defmodule Wampum do
     end
   end
 
+  @doc """
+  - Receives a List of Integers and a BitString as arguments.
+
+  - Returns a List of BitStrings permuted at indices of Integer List elements.
+
+  ## Example:
+
+      iex> Wampum.pitch(Wampum.violin, Wampum.quipu[:K5])
+
+  """
+  @doc since: "0.1.0"
   @spec pitch([integer()], binary()) :: [binary()]
   def pitch(digs, cord) do
     for numb <- digs, do: [] ++ pegbox(cord, numb)
   end
 
+  @doc """
+  - Receives a List of BitString elements as an argument.
+
+  - Prints formated BitString elements to screen.
+
+  - Returns the Atom `:ok` if successful.
+
+  ## Example:
+
+      iex(2)> Wampum.board(["tt __ rv wq", "su __ qw vr", "rv wq __ us"])
+
+              tt __ rv wq
+              su __ qw vr
+              rv wq __ us
+
+      :ok
+  """
+  @doc since: "0.1.0"
   @spec board([binary()]) :: atom()
   def board(harp) when is_list(harp) do
     IO.puts("")
@@ -282,6 +430,23 @@ defmodule Wampum do
     IO.puts("")
   end
 
+  @doc """
+  - Receives an optional Atom argument.
+
+  - Returns synonymous Atom if argument matches predefined condition,
+    else returns a Boolean.
+
+  ## Example:
+
+      iex> Wampum.synod(:guitar)
+      :eadgbe
+      iex> Wampum.synod(:zigzag)
+      true
+      iex> Wampum.synod(nil)
+      false
+
+  """
+  @doc since: "0.1.0"
   @spec synod(atom()) :: atom()
   def synod(tuned \\ nil) when is_atom(tuned) do
     cond do
@@ -294,7 +459,7 @@ defmodule Wampum do
       tuned in [:eadgbe, :guitar] ->
         :eadgbe
 
-      tuned in [:bass, :beadgcf, :ennead, :p4t] ->
+      tuned in [:bass, :beadg, :eadg, :eadgc, :ennead, :p4t] ->
         :ennead
 
       tuned in [:fkbjdn, :m3t] ->
@@ -311,6 +476,19 @@ defmodule Wampum do
     end
   end
 
+  @doc """
+  - Receives a signature Atom argument.
+
+  - Prints selected signature with default tuning to screen.
+
+  - Returns a Tuple with two Atoms.
+
+  ## Example:
+
+      iex> Wampum.weave(:N0)
+
+  """
+  @doc since: "0.1.0"
   @spec weave(atom()) :: {atom(), atom()}
   def weave(keyed \\ nil) when is_atom(keyed) do
     model = quipu()
@@ -339,6 +517,19 @@ defmodule Wampum do
     end
   end
 
+  @doc """
+  - Receives a signature Atom argument.
+
+  - Prints selected signature with specified tuning to screen.
+
+  - Returns a Tuple with two Atoms.
+
+  ## Example:
+
+      iex> Wampum.weave(:cello, :N0)
+
+  """
+  @doc since: "0.1.0"
   @spec weave(atom(), atom()) :: {atom(), atom()}
   def weave(tuned, keyed) when is_atom(tuned) and is_atom(keyed) do
     cloak = synod(tuned)
@@ -405,6 +596,8 @@ defmodule Wampum do
     end
   end
 
+  @doc false
+  @doc since: "0.1.0"
   @spec bloom(pid(), binary(), [integer()], binary()) :: atom()
   defp bloom(roll, yarn, digs, cord) when is_pid(roll) and is_binary(yarn) do
     IO.write(roll, yarn)
@@ -416,8 +609,30 @@ defmodule Wampum do
     end
   end
 
+  @doc """
+  - Receives a BitString Path and returns a Boolean.
+
+  - Test whether Path type is relative or absolute.
+
+  - If Path type is absolute then return false.
+
+  - If relative then test for Path directory.
+
+  - If no Path directory then create directory.
+
+  - Test if target File exist, if so return true.
+
+  - If no File exist, create File and return true.
+
+  ## Example:
+
+      iex> Wampum.venue? "assets/exchequer.txt"
+      true
+
+  """
+  @doc since: "0.1.0"
   @spec venue?(binary()) :: boolean()
-  defp venue?(route) when is_binary(route) do
+  def venue?(route) when is_binary(route) do
     typal = Path.type(route)
 
     if typal == :relative do
@@ -439,6 +654,22 @@ defmodule Wampum do
 
   @epilog "assets/exchequer.txt"
 
+  @doc """
+  - Receives an Atom argument and returns a Tuple with two Atoms.
+
+  - Write to file with specified tuning.
+
+  - Erase file that was written to.
+
+  ## Examples:
+
+      iex> Wampum.gamut(:guitar)
+      {:ok, :guitar}
+      iex> Wampum.gamut(:clean)
+      {:ok, :clean}
+
+  """
+  @doc since: "0.1.0"
   @spec gamut(atom()) :: {atom(), atom()}
   def gamut(tuned \\ nil) when is_atom(tuned) do
     cloak = synod(tuned)
@@ -529,7 +760,13 @@ defmodule Wampum do
     end
   end
 
-  @spec audit() :: {atom(), any()}
+  @doc """
+  - Read and view file that was written to.
+
+  - Returns a Tuple containing an Atom and BitString path.
+  """
+  @doc since: "0.1.0"
+  @spec audit() :: {atom(), binary()}
   def audit do
     route = @epilog
     typal = Path.type(route)

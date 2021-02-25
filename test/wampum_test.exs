@@ -114,6 +114,14 @@ defmodule WampumTest do
     end
   end
 
+  @epilog "assets/exchequer.txt"
+
+  test "venue? function return type boolean" do
+    kept = Wpm.venue?(@epilog)
+
+    assert is_boolean(kept) == true
+  end
+
   test "gamut function return type tuple" do
     for tuned <- [:bass, :viola, :erase] do
       kept = Wpm.gamut(tuned)
