@@ -47,7 +47,14 @@ Command-line
             __ us __ su __ qw vr __ tt __ rv wq 
 
     {:ok, :N0}
-    iex(3)> Wampum.weave :cello, :N0 
+    iex(3)> Wampum.stock
+
+            a4t     bass    beadg   bfbf    bfbfb   cello   cgda    cgdae
+            d5t     eadg    eadgbe  eadgc   fbfb    fkbjdn  gdae    guitar
+            m3t     p4t     p5t     quartz  thirds  triton  viola   violin
+
+    {:ok, 27}
+    iex(4)> Wampum.weave :cello, :N0 
 
             rv wq __ us __ su __ qw vr __ tt __ 
             su __ qw vr __ tt __ rv wq __ us __ 
@@ -56,9 +63,9 @@ Command-line
             vr __ tt __ rv wq __ us __ su __ qw 
 
     {:ok, :cello}
-    iex(4)> Wampum.gamut :guitar 
+    iex(5)> Wampum.gamut :guitar 
     {:ok, :guitar}
-    iex(5)> Wampum.audit
+    iex(6)> Wampum.audit
 
             N0-GUITAR-I1613416021631869
             rv wq __ us __ su __ qw vr __ tt __ 
@@ -71,12 +78,12 @@ Command-line
             ...
 
     {:ok, "assets/exchequer.txt"}
-    iex(6)> Wampum.gamut :clean
+    iex(7)> Wampum.gamut :clean
     {:ok, :clean}
-    iex(7)> Wampum.audit       
+    iex(8)> Wampum.audit       
 
     {:ok, "assets/exchequer.txt"}
-    iex(8)>
+    iex(9)>
 
 ---
 

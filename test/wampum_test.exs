@@ -94,6 +94,20 @@ defmodule WampumTest do
     assert match?(:ok, kept) == true
   end
 
+  test "alton function return type list" do
+    lats = Wpm.alton()
+
+    assert is_list(lats) == true
+  end
+
+  test "stock function return type tuple" do
+    kept = Wpm.stock()
+
+    assert is_tuple(kept) == true
+    assert tuple_size(kept) == 2
+    assert match?({:ok, _}, kept) == true
+  end
+
   test "synod function return type atom" do
     for tuned <- [:violin, nil, :noop] do
       kept = Wpm.synod(tuned)
@@ -123,6 +137,14 @@ defmodule WampumTest do
   end
 
   test "gamut function return type tuple" do
+    for tuned <- [nil, :wrong] do
+      kept = Wpm.gamut(tuned)
+
+      assert is_tuple(kept) == true
+      assert tuple_size(kept) == 2
+      assert match?({:error, _}, kept) == true
+    end
+
     for tuned <- [:bass, :viola, :erase] do
       kept = Wpm.gamut(tuned)
 

@@ -4,9 +4,13 @@ defmodule Wampum do
 
   ## Examples:
 
-  View signature selection menu table of contents.
+  View selection menu table of signatures.
 
       iex> Wampum.codex
+
+  View selection menu table of tunings.
+
+      iex> Wampum.stock
 
   View selected signature with default tuning.
 
@@ -253,7 +257,13 @@ defmodule Wampum do
   end
 
   @doc """
-  - Returns a List of Atom elements.
+  - Returns a List of Atom elements which is populated with the sorted keys
+    from the Map returned by `Wampum.quipu/0`.
+
+  ## Example:
+
+      iex> Wampum.quipu() |> Map.keys() |> Enum.sort()
+
   """
   @doc since: "0.1.0"
   @spec clefs() :: [atom()]
@@ -296,9 +306,13 @@ defmodule Wampum do
   end
 
   @doc """
-  - Prints a tabular grid of menu items to screen.
+  - Prints a tabular grid of menu items to the screen. The menu List is
+    populated by the sorted keys from `Wampum.quipu/0`, and then passed as
+    the first argument to `Wampum.tablet/2`.
 
-  - Returns a Tuple with Atom and Integer elements.
+  - Returns a Tuple whose first element is the Atom `:ok`, and the second
+    element is an Integer which represents the length of the List that is
+    returned by `Wampum.clefs/0`.
   """
   @doc since: "0.1.0"
   @spec codex() :: {atom(), integer()}
@@ -430,6 +444,52 @@ defmodule Wampum do
     IO.puts("")
   end
 
+  # tuning synonyms
+  @violin [:cello, :cgda, :cgdae, :gdae, :p5t, :viola, :violin]
+
+  @triton [:a4t, :bfbf, :bfbfb, :d5t, :fbfb, :triton]
+
+  @quartz [:bass, :beadg, :eadg, :eadgc, :p4t, :quartz]
+
+  @guitar [:eadgbe, :guitar]
+
+  @thirds [:fkbjdn, :m3t, :thirds]
+
+  # cleaning synonyms
+  @scrub [:clean, :clear, :empty, :erase, :scrub]
+
+  @doc """
+  - Returns a sorted List of tuning Atom elements.
+  """
+  @doc since: "0.1.0"
+  @spec alton() :: [atom()]
+  def alton do
+    lats = @violin ++ @triton ++ @quartz ++ @guitar ++ @thirds
+
+    Enum.sort(lats)
+  end
+
+  @doc """
+  - Prints a tabular grid of menu items to the screen. The menu List is
+    populated by a sorted List of tuning Atoms, and then passed as
+    the first argument to `Wampum.tablet/2`.
+
+  - Returns a Tuple whose first element is the Atom `:ok`, and the second
+    element is an Integer which represents the length of the menu List.
+  """
+  @doc since: "0.1.0"
+  @spec stock() :: {atom(), integer()}
+  def stock do
+    menu = alton()
+    size = length(menu)
+
+    IO.puts("")
+    tablet(menu, @hermit)
+    IO.puts("")
+
+    {:ok, size}
+  end
+
   @doc """
   - Receives an optional Atom argument.
 
@@ -450,22 +510,22 @@ defmodule Wampum do
   @spec synod(atom()) :: atom()
   def synod(tuned \\ nil) when is_atom(tuned) do
     cond do
-      tuned in [:a4t, :bfbf, :bfbfb, :d5t, :fbfb, :triton, :tritone] ->
-        :triton
-
-      tuned in [:cello, :cgda, :cgdae, :gdae, :mando, :p5t, :viola, :violin] ->
+      tuned in @violin ->
         :violin
 
-      tuned in [:eadgbe, :guitar] ->
-        :guitar
+      tuned in @triton ->
+        :triton
 
-      tuned in [:bass, :beadg, :eadg, :eadgc, :ennead, :p4t, :quartz] ->
+      tuned in @quartz ->
         :quartz
 
-      tuned in [:fkbjdn, :m3t, :thirds] ->
+      tuned in @guitar ->
+        :guitar
+
+      tuned in @thirds ->
         :thirds
 
-      tuned in [:clean, :clear, :empty, :erase, :scrub] ->
+      tuned in @scrub ->
         :scrub
 
       tuned in [false, nil] ->
@@ -479,7 +539,7 @@ defmodule Wampum do
   @doc """
   - Receives a signature Atom argument.
 
-  - Prints selected signature with default tuning to screen.
+  - Prints matrix of default tuning applied to selected signature.
 
   - Returns a Tuple with two Atoms.
 
@@ -518,11 +578,16 @@ defmodule Wampum do
   end
 
   @doc """
-  - Receives a signature Atom argument.
+  - Receives two Atom arguments. The first argument represents the tuning
+    to implement, while the second argument represents the key signature.
 
-  - Prints selected signature with specified tuning to screen.
+  - Prints matrix of specified tuning applied to selected signature.
 
-  - Returns a Tuple with two Atoms.
+  - Returns a Tuple with two Atoms. If successful, the first element will
+    be the Atom `:ok`, and the second element will be the tuning implemented.
+    Else, the first element will be the Atom `:error`, and the second element
+    will be the causative Atom argument passed.
+
 
   ## Example:
 
@@ -635,11 +700,19 @@ defmodule Wampum do
   @epilog "assets/exchequer.txt"
 
   @doc """
-  - Receives an Atom argument and returns a Tuple with two Atoms.
+  - Receives an Atom argument which represents either a tuning
+    implementation or a cleaning procedure.
 
-  - Write to file with specified tuning.
+  - Write all signatures implemented with specified tuning to file.
 
-  - Erase file that was written to.
+  - Overwrite the data that was previously written to file.
+
+  - The current file path is: `"#{@epilog}"`
+
+  - Returns a Tuple with two Atoms. If successful, the first element will
+    be the Atom `:ok`, and the second element will be the tuning implemented.
+    Else, the first element will be the Atom `:error`, and the second element
+    will be the causative Atom argument passed.
 
   ## Examples:
 
@@ -647,6 +720,8 @@ defmodule Wampum do
       {:ok, :guitar}
       iex> Wampum.gamut(:clean)
       {:ok, :clean}
+      iex> Wampum.gamut(:wrong)
+      {:error, :wrong}
 
   """
   @doc since: "0.1.0"
@@ -721,7 +796,9 @@ defmodule Wampum do
   end
 
   @doc """
-  - Read and view file that was written to.
+  - Read and view the file that was written to.
+
+  - The current file path is: `"#{@epilog}"`
 
   - Returns a Tuple containing an Atom and BitString path.
   """
