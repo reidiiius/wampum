@@ -141,7 +141,7 @@ defmodule Wampum do
   end
 
   @doc """
-  - Returns a Map with Atom keys and BitString values.
+  - Returns a Map with Atom keys and String values.
   """
   @doc since: "0.1.0"
   @spec quipu() :: %{key: binary()}
@@ -339,7 +339,7 @@ defmodule Wampum do
   end
 
   @doc """
-  - Returns a BitString of #{@decans} characters.
+  - Returns a String of #{@decans} characters.
   """
   @doc since: "0.1.0"
   @spec tacit() :: binary()
@@ -348,11 +348,11 @@ defmodule Wampum do
   end
 
   @doc """
-  - Receives a BitString argument and returns a Boolean.
+  - Receives a String argument and returns a Boolean.
 
   - Test whether given Bitstring length is greater than or equal to #{@decans}.
 
-  - Test whether given BitString charaters are printable.
+  - Test whether given String charaters are printable.
 
   ## Example:
 
@@ -373,13 +373,13 @@ defmodule Wampum do
   end
 
   @doc """
-  - Receives a BitString and an Integer as arguments.
+  - Receives a String and an Integer as arguments.
 
-  - Then test whether BitString is greater than or equal to #{@decans}, and
+  - Then test whether String is greater than or equal to #{@decans}, and
     if all the characters are printable using `Wampum.posit?` as a filter.
 
-  - If test succeeds, returns permuted BitString at passed Integer index,
-    else calls `Wampum.tacit` and returns a default BitString.
+  - If test succeeds, returns permuted String at passed Integer index,
+    else calls `Wampum.tacit` and returns a default String.
 
   ## Example:
 
@@ -404,9 +404,9 @@ defmodule Wampum do
   end
 
   @doc """
-  - Receives a List of Integers and a BitString as arguments.
+  - Receives a List of Integers and a String as arguments.
 
-  - Returns a List of BitStrings permuted at indices of Integer List elements.
+  - Returns a List of Strings permuted at indices of Integer List elements.
 
   ## Example:
 
@@ -420,9 +420,9 @@ defmodule Wampum do
   end
 
   @doc """
-  - Receives a List of BitString elements as an argument.
+  - Receives a List of String elements as an argument.
 
-  - Prints formated BitString elements to screen.
+  - Prints formated String elements to screen.
 
   - Returns the Atom `:ok` if successful.
 
@@ -655,7 +655,7 @@ defmodule Wampum do
   end
 
   @doc """
-  - Receives a BitString Path and returns a Boolean.
+  - Receives a String Path and returns a Boolean.
 
   - Test whether Path type is relative or absolute.
 
@@ -800,7 +800,7 @@ defmodule Wampum do
 
   - The current file path is: `"#{@epilog}"`
 
-  - Returns a Tuple containing an Atom and BitString path.
+  - Returns a Tuple containing an Atom and String path.
   """
   @doc since: "0.1.0"
   @spec audit() :: {atom(), binary()}
